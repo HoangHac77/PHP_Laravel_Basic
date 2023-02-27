@@ -1,0 +1,44 @@
+//toán tử phân giải phạm vi :: (Scope Resolution Operator)
+
+// Open cmd : terminal
+
+// start server php laravel
+php artisan serve
+
+// update all lib
+composer update
+
+// we cant change port after start(--port= enter here)
+php artisan serve --port=8080
+
+//this cmd help we interact laravel source
+php artisan list
+
+//cmd create an controller
+php artisan make:controller name_controller
+
+//cmd create an controller with auto crud
+php artisan make:controller name_controller -r
+
+//cmd create an model
+php artisan make:migration name_migration
+
+//shot syntax cmd(make quickly model and migration)
+php artisan make:model name_controller -m
+
+//cmd run migration create data to database
+php artisan migrate
+
+NOTE: change name database in .env
+
+// we cant use node js for install library to package.json
+npm install -- install all library
+
+//install lib after change in webpack
+npm run dev 
+
+// laravel mix : quản lý và biên dịch các file js,css,scss dễ dàng
+// chúng ta muốn build file sass thành css và bỏ nó vào thư mục public
+npm run watch
+
+--------------------->SOME QUERY COMMANDS IN ELOQUENT;

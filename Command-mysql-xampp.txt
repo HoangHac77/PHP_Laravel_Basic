@@ -1,0 +1,59 @@
+// access to mysql xampp - use cmd(terminal)
+mysql -u root -p
+
+// show all database in mysql
+show databases;
+
+//point to database
+use laravelapp;
+
+//show all tables
+show tables;
+
+NOTE after typing a command ending with a ---> ; <---
+
+// show all data field
+describe post;
+
+//drop  all migration
+php artisan migrate:reset
+
+//drop all migration and create new
+php artisan migrate:refresh
+
+//delete all tables and migrate
+php artisan migrate:fresh
+
+//check all migrations have run thus far
+php artisan migrate:status
+
+//create fake data
+php artisan make:factory PostFactory
+
+//create fake data and model
+php artisan make:factory PostFactory --model=Post
+
+//????
+php artisan tinker
+--->
+after run this cmd
+
+//cmd create quickly data
+\App\Models\Post::factory()->create();
+
+//create multiple data(change number in count(number))
+\App\Models\Post::factory()->count(2)->create();
+
+/*
+
+-------------->SQL QUERY
+
+//insert value to table use query
+INSERT INTO posts(title,body) values('Firts post', 'This is the first post');
+
+//select all data in table
+SELECT * FROM TABLE_NAME;
+
+//COUNT number
+SELECT count(*) FROM TABLE_NAMES;
+*/
