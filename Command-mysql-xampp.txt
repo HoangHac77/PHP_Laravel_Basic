@@ -33,6 +33,12 @@ php artisan make:factory PostFactory
 //create fake data and model
 php artisan make:factory PostFactory --model=Post
 
+//add new column in migration
+php artisan make:migration add_namecolumn_to_nametable
+
+php artisan make:migration add_image_to_food
+
+
 //????
 php artisan tinker
 --->

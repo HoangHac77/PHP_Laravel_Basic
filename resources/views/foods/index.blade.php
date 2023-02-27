@@ -24,7 +24,21 @@
         {{ $item->descriptions }}
       </div>
       <span class="badge bg-primary rounded-pill">{{ $item->count }}</span>
+      <a class="ms-2 me-2" href="foods/{{ $item->id }}/edit">
+        Edit
+    </a>
+      <a class="me-3" href="foods/{{ $item->id }}">
+        Details
+    </a>
+    <form action="/foods/{{ $item->id }}" method="post">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger">
+            Delete
+        </button>
+    </form>
     </li>
+    
 </ol>
 
 @endforeach

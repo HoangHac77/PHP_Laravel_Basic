@@ -29,6 +29,37 @@ php artisan make:model name_controller -m
 //cmd run migration create data to database
 php artisan migrate
 
+//cmd clear all service and package
+php artisan clear-compiled
+
+//cmd Maintenance Mode : bao tri
+php artisan up
+
+//cmd   Maintenance Mode
+php artisan down 
+
+// cmd env
+php artisan env
+
+php artisan --version
+
+// clear cache
+php artisan optimize
+
+php artisan cache:clear
+
+//clear auth key
+php artisan auth:clear-resets
+
+//generate key
+php artisan key:generate
+
+//luu du lieu nguoi dung
+php artisan session:table
+
+//clear view
+php artisan view:clear
+
 NOTE: change name database in .env
 
 // we cant use node js for install library to package.json

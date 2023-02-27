@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Food;
+use App\Rules\Uppercase;
+use App\Http\Requests\CreateValidationRequest;
 
 class FoodsController extends Controller
 {
@@ -40,7 +43,8 @@ class FoodsController extends Controller
      */
     public function create()
     {
-        return view('foods.create');
+        $categories = Category::all();
+        return view('foods.create')->with('categories', $categories);
     }
 
     /**
@@ -50,6 +54,7 @@ class FoodsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+    // public function store(CreateValidationRequest $request)
     {
         // dd('This is store function');
         // create new object
@@ -57,11 +62,57 @@ class FoodsController extends Controller
         // $food->name = $request->input('name');
         // $food->count = $request->input('count');
         // $food->descriptions = $request->input('descriptions');
+        // dd($request);
+
+        //validate
+        // $request->validate([
+        //     'name' => 'required|unique:food',
+        //     'count' => 'required|integer|min:0|max:1000',
+        //     'category_id' => 'required',
+        // ]);
+
+        // $request->validate([
+        //     'name' => new Uppercase,
+        //     'count' => 'required|integer|min:0|max:1000',
+        //     'category_id' => 'required',
+        // ]);
+        // dd($request->all());
+        // $request->validated();
+
+        // get file extension: lay ra duoi file
+        // dd($request->file('image')->guessExtension());
+        // dd($request->file('image')->getMimeType());
+        // dd($request->file('image')->getClientOriginalName());
+        // dd($request->file('image')->getSize());
+        // dd($request->file('image')->getError());
+        // dd($request->file('image')->isValid());
+        $request->validate([
+            'name' => 'required',
+            'count' => 'required|integer|min:0|max:1000',
+            'descriptions' => 'required',
+            'image' => 'required|mimes:jpg,png,jpeg|max:5048',
+        ]);
+
+        //Client image's name and server's image name
+        //must be different, why?
+        // trong truong nhieu nguoi cung up load mot anh khac ten
+
+        // Xau chuoi : dau tien la ten image + tg hien tai up len + - + ten food + loai duoi file
+
+        $generatedImageName = 'image' . time() . '-'
+            . $request->name . '.'
+            . $request->image->extension();
+        // dd($generatedImageName);
+
+        // move to a folder
+        $request->image->move(public_path('images'), $generatedImageName);
 
         $food = Food::create([
             'name' => $request->input('name'),
             'count' => $request->input('count'),
-            'descriptions' => $request->input('descriptions')
+            'descriptions' => $request->input('descriptions'),
+            'category_id' => $request->input('category_id'),
+            'image_path' => $generatedImageName,
         ]);
         // save database
         $food->save();
@@ -76,7 +127,16 @@ class FoodsController extends Controller
      */
     public function show($id)
     {
-        //
+        // dd("This is show function" . $id);
+        $food = Food::find($id);
+        // $category = $food->category();
+        $category = Category::find($food->category_id);
+        //gan $food bang doi tuong category
+        $food->category = $category;
+        // dd($food);
+        // dd($category);
+        // with() function - truyen tham so
+        return view('foods.show')->with('food', $food);
     }
 
     /**
@@ -87,7 +147,10 @@ class FoodsController extends Controller
      */
     public function edit($id)
     {
-        return view('foods.edit');
+        // dd($id);
+        $food = Food::find($id);
+        // dd($food);
+        return view('foods.edit')->with('food', $food);
     }
 
     /**
@@ -97,9 +160,16 @@ class FoodsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateValidationRequest $request, $id)
     {
-        //
+        $request->validated();
+        $food = Food::where('id', $id)
+            ->update([
+                'name' => $request->input('name'),
+                'count' => $request->input('count'),
+                'descriptions' => $request->input('descriptions'),
+            ]);
+        return redirect('/foods');
     }
 
     /**
@@ -110,6 +180,9 @@ class FoodsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $food = Food::find($id);
+        $food->delete();
+
+        return redirect('/foods');
     }
 }
